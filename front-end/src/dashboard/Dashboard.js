@@ -5,7 +5,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 /**
  * Defines the dashboard page.
  * @param date
- *  the date for which the user wants to view reservations.
+ *  the date for which the user wants to view reservations. asd
  * @returns {JSX.Element}
  */
 function Dashboard({ date }) {
