@@ -1,6 +1,7 @@
 /**
- * List handler for reservation resources
- */
+ *  List handler for reservation resources
+ *  new to test
+ */ 
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
