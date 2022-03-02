@@ -15,7 +15,7 @@ export default function NewReservations() {
   };
 
   const [formData, setFormData] = useState(initialData);
-  const [reservationError, setReservationError] = useState(null)
+  const [reservationError, setReservationError] = useState(null);
 
   const changeHandler = ({ target }) => {
     setFormData({
@@ -26,17 +26,17 @@ export default function NewReservations() {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    const abortController = new AbortController()
+    const abortController = new AbortController();
     async function addReservation() {
       try {
         await createReservation({ data: formData }, abortController.signal);
         history.push("/dashboard");
       } catch (error) {
-        setReservationError(error)
+        setReservationError(error);
       }
     }
-    addReservation()
-    return () => abortController.abort()
+    addReservation();
+    return () => abortController.abort();
   };
 
   const clickHandler = () => history.goBack();
@@ -52,7 +52,7 @@ export default function NewReservations() {
           placeholder="First Name"
           required
           onChange={changeHandler}
-          // value={}
+          value={formData.first_name}
         />
         <br />
         <label htmlFor="last_name">Last Name:</label>
@@ -63,7 +63,7 @@ export default function NewReservations() {
           placeholder="Last Name"
           required
           onChange={changeHandler}
-          // value={}
+          value={formData.last_name}
         />
         <br />
         <label htmlFor="mobile_number">Mobile Number:</label>
@@ -74,6 +74,8 @@ export default function NewReservations() {
           placeholder="123-456-7890"
           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
           required
+          onChange={changeHandler}
+          value={formData.mobile_number}
         />
         <br />
         <label htmlFor="reservation_date">Reservation Date:</label>
@@ -85,7 +87,7 @@ export default function NewReservations() {
           pattern="\d{4}-\d{2}-\d{2}"
           required
           onChange={changeHandler}
-          // value={}
+          value={formData.reservation_date}
         />
         <br />
         <label htmlFor="reservation_time">Reservation Time:</label>
@@ -97,7 +99,7 @@ export default function NewReservations() {
           pattern="[0-9]{2}:[0-9]{2}"
           required
           onChange={changeHandler}
-          // value={}
+          value={formData.reservation_time}
         />
         <br />
         <label htmlFor="people">Party Size:</label>
@@ -110,7 +112,7 @@ export default function NewReservations() {
           maxLength="3"
           required
           onChange={changeHandler}
-          // value={}
+          value={formData.people}
         />
         <br />
         <br />
@@ -119,7 +121,7 @@ export default function NewReservations() {
           Cancel
         </button>
       </form>
-      <ErrorAlert error={reservationError}/>
+      <ErrorAlert error={reservationError} />
     </>
   );
 }
