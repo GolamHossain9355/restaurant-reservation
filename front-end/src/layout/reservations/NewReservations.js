@@ -18,9 +18,13 @@ export default function NewReservations() {
   const [reservationError, setReservationError] = useState(null);
 
   const changeHandler = ({ target }) => {
+    let value = target.value;
+    if (target.name === "people") {
+      value = Number(value)
+    }
     setFormData({
       ...formData,
-      [target.name]: target.value,
+      [target.name]: value,
     });
   };
 

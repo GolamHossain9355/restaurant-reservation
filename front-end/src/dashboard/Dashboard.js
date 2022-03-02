@@ -5,6 +5,7 @@ import { previous, next, today } from "../utils/date-time";
 
 /**
  * Defines the dashboard page.
+ * asdasd
  * @param date
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
