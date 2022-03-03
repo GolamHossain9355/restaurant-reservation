@@ -14,7 +14,7 @@ const requiredFields = [
   "people",
 ];
 
-function createReservationDateWithTime(date, time) {
+function createReservationDateWithTime(date, time = "00:00") {
   return new Date(
     date.slice(0, 4),
     date.slice(5, 7) - 1,
@@ -62,19 +62,31 @@ function validateFields(req, res, next) {
     }
   });
 
-  let multiAlerts = [];
-  const present = new Date();
-  const reservationDate = createReservationDateWithTime(
-    data["reservation_date"],
-    data["reservation_time"]
-  );
+  const multiAlerts = [];
+  const resDate = data["reservation_date"];
+  const resTime = data["reservation_time"];
 
-  if (reservationDate < present)
+  const present = new Date();
+  const reservationDateAndTime = createReservationDateWithTime(resDate, resTime);
+
+  if (reservationDateAndTime < createReservationDateWithTime(resDate, "10:30")) {
+    multiAlerts.push(
+      "The restaurant opens at 10:30 AM. Please pick a time during when the restaurant will be open"
+    );
+  }
+
+  if (reservationDateAndTime > createReservationDateWithTime(resDate, "21:30")) {
+    multiAlerts.push(
+      "The restaurant closes at 9:30 PM. Please pick a time during which the restaurant will be open"
+    );
+  }
+
+  if (reservationDateAndTime < present)
     multiAlerts.push(
       "The reservation date is in the past. Only future reservations are allowed"
     );
 
-  if (reservationDate.getDay() === 2)
+  if (reservationDateAndTime.getDay() === 2)
     multiAlerts.push(`The restaurant is closed on Tuesdays`);
 
   if (multiAlerts.length > 0) {
