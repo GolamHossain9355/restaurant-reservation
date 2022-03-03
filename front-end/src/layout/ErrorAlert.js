@@ -9,10 +9,11 @@ import React from "react";
  */
 
 function ErrorAlert({ error }) {
-  if (error && error.message.length) {
+  if (error && Array.isArray(error.message)) {
     return (
       error && (
         <div className="alert alert-danger m-2">
+          Errors:
           <ul>
             {error.message.map(msg => (
               <li>{msg}</li>
