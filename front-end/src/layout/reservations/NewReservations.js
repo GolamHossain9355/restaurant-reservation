@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import ErrorAlert from "../ErrorAlert";
 import { createReservation } from "../../utils/api";
 
-export default function NewReservations() {
+export default function NewReservations({setCurrentDate}) {
   const history = useHistory();
   const initialData = {
     first_name: "",
@@ -34,7 +34,7 @@ export default function NewReservations() {
     async function addReservation() {
       try {
         await createReservation({ data: formData }, abortController.signal);
-        history.push("/dashboard");
+        history.push(`/dashboard?date=${formData.reservation_date}`);
       } catch (error) {
         setReservationError(error);
       }

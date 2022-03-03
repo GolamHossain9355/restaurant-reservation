@@ -5,7 +5,7 @@ import { previous, next, today } from "../utils/date-time";
 
 /**
  * Defines the dashboard page.
- * 
+ *
  * @param date
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
@@ -20,7 +20,10 @@ function Dashboard({ date }) {
     async function loadDashboard() {
       const abortController = new AbortController();
       try {
-        const data = await listReservations(currentDate, abortController.signal);
+        const data = await listReservations(
+          currentDate,
+          abortController.signal
+        );
         setReservations(data);
       } catch (error) {
         setReservationsError(error);
@@ -32,13 +35,13 @@ function Dashboard({ date }) {
 
   const clickHandler = ({ target }) => {
     if (target.name === "previous") {
-      setCurrentDate(previous(currentDate))
+      setCurrentDate(previous(currentDate));
     }
     if (target.name === "today") {
-      setCurrentDate(today())
+      setCurrentDate(today());
     }
     if (target.name === "next") {
-      setCurrentDate(next(currentDate))
+      setCurrentDate(next(currentDate));
     }
   };
 
