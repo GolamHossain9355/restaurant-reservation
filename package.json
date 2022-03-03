@@ -49,6 +49,7 @@
   "author": "Thinkful, Inc.",
   "license": "UNLICENSED",
   "dependencies": {
-    "heroku": "^7.33.3"
+    "heroku": "^7.33.3",
+    "morgan": "^1.10.0"
   }
 }

@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import ErrorAlert from "../ErrorAlert";
 import { createReservation } from "../../utils/api";
 
-export default function NewReservations({setCurrentDate}) {
+export default function NewReservations() {
   const history = useHistory();
   const initialData = {
     first_name: "",
@@ -20,7 +20,7 @@ export default function NewReservations({setCurrentDate}) {
   const changeHandler = ({ target }) => {
     let value = target.value;
     if (target.name === "people") {
-      value = Number(value)
+      value = Number(value);
     }
     setFormData({
       ...formData,
@@ -46,7 +46,8 @@ export default function NewReservations({setCurrentDate}) {
   const clickHandler = () => history.goBack();
 
   return (
-    <>
+    <div>
+      <ErrorAlert error={reservationError} />
       <form onSubmit={submitHandler}>
         <label htmlFor="first_name">First Name:</label>
         <input
@@ -76,7 +77,6 @@ export default function NewReservations({setCurrentDate}) {
           id="mobile_number"
           name="mobile_number"
           placeholder="123-456-7890"
-          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
           required
           onChange={changeHandler}
           value={formData.mobile_number}
@@ -125,7 +125,6 @@ export default function NewReservations({setCurrentDate}) {
           Cancel
         </button>
       </form>
-      <ErrorAlert error={reservationError} />
-    </>
+    </div>
   );
 }

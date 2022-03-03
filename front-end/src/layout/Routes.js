@@ -4,7 +4,7 @@ import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
-import NewReservations from "./reservations/NewReservations"
+import NewReservations from "./reservations/NewReservations";
 
 /**
  * Defines all the routes for the application.
@@ -13,7 +13,7 @@ import NewReservations from "./reservations/NewReservations"
  *
  * @returns {JSX.Element}
  */
- function useQuery() {
+function useQuery() {
   const { search } = useLocation();
 
   return React.useMemo(() => new URLSearchParams(search), [search]);
@@ -21,9 +21,9 @@ import NewReservations from "./reservations/NewReservations"
 
 function Routes() {
   const query = useQuery();
-  let date = query.get('date');
+  let date = query.get("date");
 
-  if (!date) date = today()
+  if (!date) date = today();
 
   return (
     <Switch>

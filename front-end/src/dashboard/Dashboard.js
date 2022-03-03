@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { previous, next, today } from "../utils/date-time";
@@ -12,18 +13,15 @@ import { previous, next, today } from "../utils/date-time";
  */
 function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
-  const [currentDate, setCurrentDate] = useState(date);
   const [reservationsError, setReservationsError] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
     setReservationsError(null);
     async function loadDashboard() {
       const abortController = new AbortController();
       try {
-        const data = await listReservations(
-          currentDate,
-          abortController.signal
-        );
+        const data = await listReservations(date, abortController.signal);
         setReservations(data);
       } catch (error) {
         setReservationsError(error);
@@ -31,25 +29,26 @@ function Dashboard({ date }) {
       return () => abortController.abort();
     }
     loadDashboard();
-  }, [currentDate]);
+  }, [date]);
 
   const clickHandler = ({ target }) => {
     if (target.name === "previous") {
-      setCurrentDate(previous(currentDate));
+      history.push(`/dashboard?date=${previous(date)}`);
     }
     if (target.name === "today") {
-      setCurrentDate(today());
+      history.push(`/dashboard?date=${today()}`);
     }
     if (target.name === "next") {
-      setCurrentDate(next(currentDate));
+      history.push(`/dashboard?date=${next(date)}`);
     }
   };
 
   return (
     <main>
+      <ErrorAlert error={reservationsError} />
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date: {currentDate}</h4>
+        <h4 className="mb-0">Reservations for date: {date}</h4>
       </div>
       <button type="button" name="previous" onClick={clickHandler}>
         Previous
@@ -72,7 +71,6 @@ function Dashboard({ date }) {
           <hr />
         </div>
       ))}
-      <ErrorAlert error={reservationsError} />
     </main>
   );
 }
