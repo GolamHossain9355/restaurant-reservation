@@ -5,6 +5,39 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
+
+async function list(req, res) {
+  const { date } = req.query;
+  const data = await service.list(date);
+  res.status(200).json({ data });
+}
+
+async function create(req, res) {
+  const { data: newData = {} } = req.body;
+  const data = await service.create(newData);
+  res.status(201).json({ data });
+}
+
+async function read(req, res) {
+  const data = res.locals.foundReservation
+  res.status(200).json({ data });
+}
+
+async function reservationExists(req, res, next) {
+  const {reservationId} = req.params
+  const foundReservation = await service.read(reservationId)
+
+  if (!foundReservation) {
+    return next({
+      status: 404,
+      message:`Reservation number ${reservationId} does not exist`
+    })
+  }
+
+  res.locals.foundReservation = foundReservation
+  next()
+}
+
 const requiredFields = [
   "first_name",
   "last_name",
@@ -49,7 +82,7 @@ function validateFields(req, res, next) {
   if (data["people"] && typeof data["people"] !== "number") {
     return next({
       status: 400,
-      message: `people is not a number`,
+      message: `people value must be a number`,
     });
   }
 
@@ -67,23 +100,31 @@ function validateFields(req, res, next) {
   const resTime = data["reservation_time"];
 
   const present = new Date();
-  const reservationDateAndTime = createReservationDateWithTime(resDate, resTime);
+  const reservationDateAndTime = createReservationDateWithTime(
+    resDate,
+    resTime
+  );
 
-  if (reservationDateAndTime < createReservationDateWithTime(resDate, "10:30")) {
+  if (
+    reservationDateAndTime < createReservationDateWithTime(resDate, "10:30")
+  ) {
     multiAlerts.push(
       "The restaurant opens at 10:30 AM. Please pick a time during when the restaurant will be open"
     );
   }
 
-  if (reservationDateAndTime > createReservationDateWithTime(resDate, "21:30")) {
+  if (
+    reservationDateAndTime > createReservationDateWithTime(resDate, "21:30")
+  ) {
     multiAlerts.push(
-      "The restaurant closes at 9:30 PM. Please pick a time during which the restaurant will be open"
+      "The restaurant closes at 10:30 PM. The reservation time is too close to the restaurant closing time."
     );
   }
-
+  const dateOrTime =
+    reservationDateAndTime.getDay() === present.getDay() ? "time" : "date";
   if (reservationDateAndTime < present)
     multiAlerts.push(
-      "The reservation date is in the past. Only future reservations are allowed"
+      `The reservation ${dateOrTime} is in the past. Please pick a ${dateOrTime} in the future`
     );
 
   if (reservationDateAndTime.getDay() === 2)
@@ -92,26 +133,15 @@ function validateFields(req, res, next) {
   if (multiAlerts.length > 0) {
     return next({
       status: 400,
-      message: multiAlerts,
+      message: multiAlerts.length > 1 ? multiAlerts : multiAlerts[0],
     });
   }
 
   next();
 }
 
-async function list(req, res) {
-  const { date } = req.query;
-  const data = await service.list(date);
-  res.status(200).json({ data });
-}
-
-async function create(req, res) {
-  const { data = {} } = req.body;
-  const newData = await service.create(data);
-  res.status(201).json({ data: newData });
-}
-
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [asyncErrorBoundary(validateFields), asyncErrorBoundary(create)],
+  read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)]
 };

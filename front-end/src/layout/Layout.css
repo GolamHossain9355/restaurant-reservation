@@ -2,3 +2,12 @@
   background-color: #393a44;
   min-width: 200px;
 }
+
+table, th, td {
+  border:1px solid black;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+}
