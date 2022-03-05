@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { listReservations } from "../utils/api";
+import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import { previous, next, today } from "../utils/date-time";
+import ListAllReservations from "../reservations/ListAllReservations";
+import ListAllTables from "../tables/ListAllTables";
+import "../layout/Layout.css";
 
 /**
  * Defines the dashboard page.
@@ -13,35 +14,38 @@ import { previous, next, today } from "../utils/date-time";
  */
 function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
+  const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  const history = useHistory();
 
   useEffect(() => {
+    const abortController = new AbortController();
     setReservationsError(null);
-    async function loadDashboard() {
-      const abortController = new AbortController();
+    async function loadReservations() {
       try {
         const data = await listReservations(date, abortController.signal);
         setReservations(data);
       } catch (error) {
         setReservationsError(error);
       }
-      return () => abortController.abort();
     }
-    loadDashboard();
+    loadReservations();
+    return () => abortController.abort();
   }, [date]);
 
-  const clickHandler = ({ target }) => {
-    if (target.name === "previous") {
-      history.push(`/dashboard?date=${previous(date)}`);
+  useEffect(() => {
+    const abortController = new AbortController();
+    setReservationsError(null);
+    async function loadTables() {
+      try {
+        const data = await listTables(abortController.signal);
+        setTables(data);
+      } catch (error) {
+        setReservationsError(error);
+      }
     }
-    if (target.name === "today") {
-      history.push(`/dashboard?date=${today()}`);
-    }
-    if (target.name === "next") {
-      history.push(`/dashboard?date=${next(date)}`);
-    }
-  };
+    loadTables();
+    return () => abortController.abort();
+  }, []);
 
   return (
     <main>
@@ -50,27 +54,9 @@ function Dashboard({ date }) {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for date: {date}</h4>
       </div>
-      <button type="button" name="previous" onClick={clickHandler}>
-        Previous
-      </button>
-      <button type="button" name="today" onClick={clickHandler}>
-        Today
-      </button>
-      <button type="button" name="next" onClick={clickHandler}>
-        Next
-      </button>
+      <ListAllReservations reservations={reservations} date={date} />
       <hr />
-      {reservations.map((reservation) => (
-        <div key={reservation.reservation_id}>
-          <p>First Name: {reservation.first_name}</p>
-          <p>Last Name: {reservation.last_name}</p>
-          <p>Mobile Number: {reservation.mobile_number}</p>
-          <p>Reservation Date: {reservation.reservation_date}</p>
-          <p>Reservation Time: {reservation.reservation_time}</p>
-          <p>Party Size: {reservation.people}</p>
-          <hr />
-        </div>
-      ))}
+      <ListAllTables tables={tables} />
     </main>
   );
 }
