@@ -25,6 +25,12 @@ async function update(req, res) {
   res.status(200).json({ data });
 }
 
+async function destroy(req, res) {
+  const {tableId} = req.params;
+  await service.delete(tableId);
+  res.sendStatus(200)
+}
+
 async function tableExists(req, res, next) {
   const { tableId } = req.params;
   const foundTable = await service.read(tableId);
@@ -107,18 +113,42 @@ async function updateValidations(req, res, next) {
   next();
 }
 
+function checkIfOccupied(req, res, next) {
+  const foundTable = res.locals.foundTable
+  if (foundTable.reservation_id) {
+    return next({ 
+      status: 400,
+      message: "Table is occupied"
+    })
+  }
+  next()
+}
+
+function checkIfFree(req, res, next) {
+  const foundTable = res.locals.foundTable
+  if (!foundTable.reservation_id) {
+    return next({
+      status: 400,
+      message: "Table is not occupied"
+    })
+  }
+  next()
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [
-    asyncErrorBoundary(missingFields(createRequiredFields)),
-    asyncErrorBoundary(createValidations),
+    missingFields(createRequiredFields),
+    createValidations,
     asyncErrorBoundary(create),
   ],
   read: [asyncErrorBoundary(tableExists), asyncErrorBoundary(read)],
   update: [
     asyncErrorBoundary(tableExists),
-    asyncErrorBoundary(missingFields(updateRequiredFields)),
+    missingFields(updateRequiredFields),
     asyncErrorBoundary(updateValidations),
+    checkIfOccupied,
     asyncErrorBoundary(update),
   ],
+  delete: [asyncErrorBoundary(tableExists), checkIfFree, asyncErrorBoundary(destroy)]
 };
