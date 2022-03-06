@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { listReservations, listTables } from "../utils/api";
+import { useHistory } from "react-router-dom";
+import {
+  listReservations,
+  listTables,
+  clearTableAssignment,
+} from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ListAllReservations from "../reservations/ListAllReservations";
 import ListAllTables from "../tables/ListAllTables";
@@ -47,6 +52,28 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }, []);
 
+  const clickHandlerFinishBTN = ({ target }) => {
+    const abortController = new AbortController();
+    setReservationsError(null);
+
+    async function clearAssignment() {
+      try {
+        await clearTableAssignment(target.id, abortController.signal);
+        const data = await listTables(abortController.signal);
+        setTables(data);
+      } catch (error) {
+        setReservationsError(error);
+      }
+    }
+
+    const confirm = window.confirm(
+      "Is this table ready to seat new guests? \n\n This cannot be undone."
+    );
+
+    if (confirm) clearAssignment();
+    return () => abortController.abort();
+  };
+
   return (
     <main>
       <ErrorAlert error={reservationsError} />
@@ -56,7 +83,7 @@ function Dashboard({ date }) {
       </div>
       <ListAllReservations reservations={reservations} date={date} />
       <hr />
-      <ListAllTables tables={tables} />
+      <ListAllTables tables={tables} clickHandler={clickHandlerFinishBTN} />
     </main>
   );
 }

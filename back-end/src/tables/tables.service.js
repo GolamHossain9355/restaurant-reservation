@@ -12,13 +12,21 @@ function create(table) {
 }
 
 function read(table_id) {
-  return knex("tables").where({ table_id }).first()
+  return knex("tables").where({ table_id }).first();
 }
 
 function update(table, table_id) {
   return knex("tables")
     .where({ table_id })
     .update(table)
+    .returning("*")
+    .then((data) => data[0]);
+}
+
+function destroy(table_id) {
+  return knex("tables")
+    .where({ table_id })
+    .update({reservation_id: null})
     .returning("*")
     .then((data) => data[0])
 }
@@ -27,5 +35,6 @@ module.exports = {
   list,
   create,
   read,
-  update
+  update,
+  delete: destroy
 };

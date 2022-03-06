@@ -1,4 +1,4 @@
-export default function ListAllTables({ tables }) {
+export default function ListAllTables({ tables, clickHandler }) {
   return (
     <>
       <table>
@@ -17,7 +17,16 @@ export default function ListAllTables({ tables }) {
               <td>{table.table_name}</td>
               <td>{table.capacity}</td>
               <td data-table-id-status={table.table_id}>
-                {table.reservation_id ? "Occupied" : "Free"}
+                {table.reservation_id ? (
+                  <>
+                    Occupied{" "}
+                    <button data-table-id-finish={table.table_id} id={table.table_id} onClick={clickHandler}>
+                      Finish
+                    </button>{" "}
+                  </>
+                ) : (
+                  "Free"
+                )}
               </td>
             </tr>
           ))}
