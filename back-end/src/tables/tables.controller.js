@@ -27,8 +27,8 @@ async function update(req, res) {
 
 async function destroy(req, res) {
   const {tableId} = req.params;
-  await service.delete(tableId);
-  res.sendStatus(200)
+  const data = await service.delete(tableId);
+  res.status(200).json({ data });
 }
 
 async function tableExists(req, res, next) {
