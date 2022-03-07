@@ -6,7 +6,7 @@ import { listTables, assignTable } from "../utils/api";
 
 export default function SeatingReservation() {
   const [tables, setTables] = useState([]);
-  const [selectedTable, setSelectedTable] = useState(null);
+  const [selectedTableId, setSelectedTableId] = useState(null);
   const [reservationError, setReservationError] = useState(null);
   const { reservationId } = useParams();
   const history = useHistory();
@@ -28,12 +28,12 @@ export default function SeatingReservation() {
 
   useEffect(() => {
     if (tables.length) {
-      setSelectedTable(tables[0].table_id);
+      setSelectedTableId(tables[0].table_id);
     }
   }, [tables]);
 
   const changeHandler = ({ target }) => {
-    setSelectedTable(Number(target.value));
+    setSelectedTableId(Number(target.value));
   };
 
   const submitHandler = (event) => {
@@ -44,7 +44,7 @@ export default function SeatingReservation() {
       try {
         await assignTable(
           { reservation_id: reservationId },
-          selectedTable,
+          selectedTableId,
           abortController.signal
         );
         history.push("/dashboard");

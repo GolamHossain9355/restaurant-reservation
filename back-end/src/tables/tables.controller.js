@@ -21,13 +21,28 @@ async function read(req, res) {
 async function update(req, res) {
   const { tableId } = req.params;
   const { data: updatedData } = req.body;
+  const foundReservation = res.locals.foundReservation;
+
   const data = await service.update(updatedData, tableId);
+  await reservationsService.update(
+    { status: "seated" },
+    foundReservation.reservation_id
+  );
+
   res.status(200).json({ data });
 }
 
 async function destroy(req, res) {
-  const {tableId} = req.params;
+  const { tableId } = req.params;
+  const foundTable = res.locals.foundTable
+  const foundReservation = await reservationsService.read(foundTable.reservation_id);
+
   const data = await service.delete(tableId);
+  await reservationsService.update(
+    { status: "finished" },
+    foundReservation.reservation_id
+  );
+
   res.status(200).json({ data });
 }
 
@@ -50,7 +65,7 @@ const updateRequiredFields = ["reservation_id"];
 function missingFields(requiredFields) {
   return (req, res, next) => {
     const { data } = req.body;
-    
+
     requiredFields.map((field) => {
       if (!data || !data[field]) {
         return next({
@@ -110,29 +125,43 @@ async function updateValidations(req, res, next) {
     });
   }
 
+  res.locals.foundReservation = foundReservation;
   next();
 }
 
 function checkIfOccupied(req, res, next) {
-  const foundTable = res.locals.foundTable
+  const foundTable = res.locals.foundTable;
   if (foundTable.reservation_id) {
-    return next({ 
+    return next({
       status: 400,
-      message: "Table is occupied"
-    })
+      message: "Table is occupied",
+    });
   }
-  next()
+  next();
 }
 
 function checkIfFree(req, res, next) {
-  const foundTable = res.locals.foundTable
+  const foundTable = res.locals.foundTable;
   if (!foundTable.reservation_id) {
     return next({
       status: 400,
-      message: "Table is not occupied"
-    })
+      message: "Table is not occupied",
+    });
   }
-  next()
+  next();
+}
+
+function statusValidation(req, res, next) {
+  const foundReservation = res.locals.foundReservation;
+
+  if (foundReservation["status"] === "seated") {
+    return next({
+      status: 400,
+      message: `reservation status is currently seated`,
+    });
+  }
+
+  next();
 }
 
 module.exports = {
@@ -148,7 +177,12 @@ module.exports = {
     missingFields(updateRequiredFields),
     asyncErrorBoundary(updateValidations),
     checkIfOccupied,
+    statusValidation,
     asyncErrorBoundary(update),
   ],
-  delete: [asyncErrorBoundary(tableExists), checkIfFree, asyncErrorBoundary(destroy)]
+  delete: [
+    asyncErrorBoundary(tableExists),
+    checkIfFree,
+    asyncErrorBoundary(destroy),
+  ],
 };
