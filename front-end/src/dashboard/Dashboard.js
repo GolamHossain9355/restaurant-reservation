@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import {
   listReservations,
   listTables,
@@ -59,8 +58,10 @@ function Dashboard({ date }) {
     async function clearAssignment() {
       try {
         await clearTableAssignment(target.id, abortController.signal);
-        const data = await listTables(abortController.signal);
-        setTables(data);
+        const tableData = await listTables(abortController.signal);
+        const reservationData = await listReservations(date, abortController.signal);
+        setReservations(reservationData);
+        setTables(tableData)
       } catch (error) {
         setReservationsError(error);
       }

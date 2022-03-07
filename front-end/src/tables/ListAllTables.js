@@ -7,7 +7,7 @@ export default function ListAllTables({ tables, clickHandler }) {
             <th>#</th>
             <th>Table Name</th>
             <th>Capacity</th>
-            <th>Status</th>
+            <th>Availability</th>
           </tr>
         </thead>
         <tbody>

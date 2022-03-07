@@ -5,7 +5,6 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
-
 async function list(req, res) {
   const { date } = req.query;
   const data = await service.list(date);
@@ -19,23 +18,36 @@ async function create(req, res) {
 }
 
 async function read(req, res) {
-  const data = res.locals.foundReservation
+  const data = res.locals.foundReservation;
   res.status(200).json({ data });
 }
 
+async function update(req, res) {
+  const { reservationId } = req.params;
+  const { data: newData } = req.body;
+  const data = await service.update(newData, reservationId);
+  res.status(200).json({ data });
+}
+
+async function destroy(req, res) {
+  const { reservationId } = req.params;
+  await service.delete(reservationId);
+  res.sendStatus(204);
+}
+
 async function reservationExists(req, res, next) {
-  const {reservationId} = req.params
-  const foundReservation = await service.read(reservationId)
+  const { reservationId } = req.params;
+  const foundReservation = await service.read(reservationId);
 
   if (!foundReservation) {
     return next({
       status: 404,
-      message:`Reservation number ${reservationId} does not exist`
-    })
+      message: `Reservation number ${reservationId} does not exist`,
+    });
   }
 
-  res.locals.foundReservation = foundReservation
-  next()
+  res.locals.foundReservation = foundReservation;
+  next();
 }
 
 const requiredFields = [
@@ -60,13 +72,21 @@ function createReservationDateWithTime(date, time = "00:00") {
 function validateFields(req, res, next) {
   const { data = {} } = req.body;
 
-  if (data["reservation_date"]) {
-    if (!data["reservation_date"].match(/\d{4}-\d{2}-\d{2}/g)) {
-      return next({
-        status: 400,
-        message: `reservation_date does not match the pattern`,
-      });
-    }
+  if (data["status"] && data["status"] !== "booked") {
+    return next({
+      status: 400,
+      message: `reservation is ${data["status"]}`,
+    });
+  }
+
+  if (
+    data["reservation_date"] &&
+    !data["reservation_date"].match(/\d{4}-\d{2}-\d{2}/g)
+  ) {
+    return next({
+      status: 400,
+      message: `reservation_date does not match the pattern`,
+    });
   }
 
   if (
@@ -140,8 +160,30 @@ function validateFields(req, res, next) {
   next();
 }
 
+function statusValidation(req,res,next) {
+  const { data = {} } = req.body;
+  const foundReservation = res.locals.foundReservation
+  if (data["status"] === "unknown") {
+    return next({
+      status: 400,
+      message: `reservation status is ${data["status"]}`
+    })
+  }
+
+  if (foundReservation["status"] === "finished") {
+    return next({
+      status: 400,
+      message: `reservation status is currently finished`
+    })
+  }
+
+  next()
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
-  create: [asyncErrorBoundary(validateFields), asyncErrorBoundary(create)],
-  read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)]
+  create: [validateFields, asyncErrorBoundary(create)],
+  read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
+  update: [asyncErrorBoundary(reservationExists), statusValidation, asyncErrorBoundary(update)],
+  delete: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(destroy)],
 };
