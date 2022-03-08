@@ -1,4 +1,4 @@
-export default function ListReservations({ reservations }) {
+export default function ListAllReservations({ reservations }) {
   return (
     <>
       {reservations.length ? (

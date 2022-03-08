@@ -57,16 +57,24 @@ async function fetchJson(url, options, onCancel) {
  *  a promise that resolves to a possibly empty array of reservation saved in the database.
  */
 
-export async function listReservations(params, signal) {
-  const url = new URL(`${API_BASE_URL}/reservations?date=${params}`);
+export async function listReservations(date, signal) {
+  const url = new URL(`${API_BASE_URL}/reservations?date=${date}`);
 
-  Object.entries(params).forEach(([key, value]) =>
+  Object.entries(date).forEach(([key, value]) =>
     url.searchParams.append(key, value.toString())
   );
 
   return await fetchJson(url, { headers, signal }, [])
     .then(formatReservationDate)
     .then(formatReservationTime);
+}
+
+export async function listReservationsByMobileNumber(mobile_number, signal) {
+  const url = new URL(
+    `${API_BASE_URL}/reservations?mobile_number=${mobile_number}`
+  );
+
+  return await fetchJson(url, { headers, signal }, []);
 }
 
 export async function createReservation(reservation, signal) {
@@ -84,7 +92,7 @@ export async function createReservation(reservation, signal) {
 
 export async function assignTable(reservation, tableNumber, signal) {
   const url = new URL(`${API_BASE_URL}/tables/${tableNumber}/seat`);
-  
+
   const options = {
     method: "PUT",
     headers,
@@ -113,10 +121,9 @@ export async function createTable(table, signal) {
   return await fetchJson(url, options, {});
 }
 
-
 export async function clearTableAssignment(tableId, signal) {
   const url = new URL(`${API_BASE_URL}/tables/${tableId}/seat`);
-  
+
   const options = {
     method: "DELETE",
     headers,
@@ -126,4 +133,3 @@ export async function clearTableAssignment(tableId, signal) {
 
   return await fetchJson(url, options, {});
 }
-
