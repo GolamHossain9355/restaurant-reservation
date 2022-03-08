@@ -5,10 +5,11 @@ function list(reservation_date) {
     return knex("reservations")
       .where({ reservation_date })
       .whereNot({ status: "finished" })
+      .whereNot({ status: "canceled"})
       .orderBy("reservation_time");
   }
 
-  return knex("reservations").orderBy("reservation_time");
+  return knex("reservations").orderBy("reservation_id");
 }
 
 function listMatchingMobile(mobile_number) {

@@ -110,7 +110,11 @@ function Dashboard({ date }) {
         Next
       </button>
       <hr />
-      <ListAllReservations reservations={reservations} date={date} />
+      <ListAllReservations
+        reservations={reservations}
+        date={date}
+        setReservations={setReservations}
+      />
       <hr />
       <ListAllTables tables={tables} clickHandler={clickHandlerFinishBTN} />
     </main>

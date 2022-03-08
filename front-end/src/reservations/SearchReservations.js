@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { listReservationsByMobileNumber } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import ListAllReservations from "../reservations/ListAllReservations";
+import ListAllReservations from "./ListAllReservations";
 
 export default function SearchReservation() {
   const [matchingReservations, setMatchingReservations] = useState([]);

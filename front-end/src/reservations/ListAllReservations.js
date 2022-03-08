@@ -1,4 +1,33 @@
-export default function ListAllReservations({ reservations }) {
+import { updateReservationStatus, listReservations } from "../utils/api";
+
+export default function ListAllReservations({
+  reservations,
+  date,
+  setReservations,
+}) {
+  const clickHandler = ({ target }) => {
+    const confirm = window.confirm(
+      "Do you want to cancel this reservation? \n\n This cannot be undone."
+    );
+    const abortController = new AbortController();
+    async function loadCancelReservation() {
+      try {
+        await updateReservationStatus(
+          { status: "canceled" },
+          target.id,
+          abortController.signal
+        );
+        const data = await listReservations(date, abortController.signal);
+        setReservations(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (confirm) loadCancelReservation();
+    return () => abortController.abort();
+  };
+
   return (
     <>
       {reservations.length ? (
@@ -12,6 +41,7 @@ export default function ListAllReservations({ reservations }) {
               <th>Time</th>
               <th>Party Size</th>
               <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -24,7 +54,9 @@ export default function ListAllReservations({ reservations }) {
                 <td>{reservation.reservation_time}</td>
                 <td>{reservation.people}</td>
                 <td data-reservation-id-status={reservation.reservation_id}>
-                  {reservation.status}{" "}
+                  {reservation.status}
+                </td>
+                <td>
                   {reservation.status === "booked" && (
                     <a
                       className="btn btn-secondary"
@@ -32,7 +64,23 @@ export default function ListAllReservations({ reservations }) {
                     >
                       Seat
                     </a>
-                  )}
+                  )}{" "}
+                  {
+                    <a
+                      className="btn btn-secondary"
+                      href={`/reservations/${reservation.reservation_id}/edit`}
+                    >
+                      Edit
+                    </a>
+                  }{" "}
+                  <button
+                    className="btn btn-secondary"
+                    onClick={clickHandler}
+                    data-reservation-id-cancel={reservation.reservation_id}
+                    id={reservation.reservation_id}
+                  >
+                    Cancel
+                  </button>
                 </td>
               </tr>
             ))}
