@@ -7,7 +7,12 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 async function list(req, res) {
   const { date } = req.query;
-  const data = await service.list(date);
+  const { mobile_number } = req.query;
+
+  const data = mobile_number
+    ? await service.listMatchingMobile(mobile_number)
+    : await service.list(date);
+
   res.status(200).json({ data });
 }
 
@@ -160,30 +165,34 @@ function validateFields(req, res, next) {
   next();
 }
 
-function statusValidation(req,res,next) {
+function statusValidation(req, res, next) {
   const { data = {} } = req.body;
-  const foundReservation = res.locals.foundReservation
+  const foundReservation = res.locals.foundReservation;
   if (data["status"] === "unknown") {
     return next({
       status: 400,
-      message: `reservation status is ${data["status"]}`
-    })
+      message: `reservation status is ${data["status"]}`,
+    });
   }
 
   if (foundReservation["status"] === "finished") {
     return next({
       status: 400,
-      message: `reservation status is currently finished`
-    })
+      message: `reservation status is currently finished`,
+    });
   }
 
-  next()
+  next();
 }
 
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [validateFields, asyncErrorBoundary(create)],
   read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
-  update: [asyncErrorBoundary(reservationExists), statusValidation, asyncErrorBoundary(update)],
+  update: [
+    asyncErrorBoundary(reservationExists),
+    statusValidation,
+    asyncErrorBoundary(update),
+  ],
   delete: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(destroy)],
 };
