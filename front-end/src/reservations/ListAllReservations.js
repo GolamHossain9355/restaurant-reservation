@@ -1,33 +1,6 @@
-import { useHistory } from "react-router-dom";
-import { previous, next, today } from "../utils/date-time";
-
-export default function ListReservations({ reservations, date }) {
-  const history = useHistory();
-
-  const clickHandler = ({ target }) => {
-    if (target.name === "previous") {
-      history.push(`/dashboard?date=${previous(date)}`);
-    }
-    if (target.name === "today") {
-      history.push(`/dashboard?date=${today()}`);
-    }
-    if (target.name === "next") {
-      history.push(`/dashboard?date=${next(date)}`);
-    }
-  };
-
+export default function ListAllReservations({ reservations }) {
   return (
     <>
-      <button type="button" name="previous" onClick={clickHandler}>
-        Previous
-      </button>
-      <button type="button" name="today" onClick={clickHandler}>
-        Today
-      </button>
-      <button type="button" name="next" onClick={clickHandler}>
-        Next
-      </button>
-      <hr />
       {reservations.length ? (
         <table>
           <thead>

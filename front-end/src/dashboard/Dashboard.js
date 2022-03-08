@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import {
   listReservations,
   listTables,
@@ -7,6 +8,7 @@ import {
 import ErrorAlert from "../layout/ErrorAlert";
 import ListAllReservations from "../reservations/ListAllReservations";
 import ListAllTables from "../tables/ListAllTables";
+import { previous, next, today } from "../utils/date-time";
 import "../layout/Layout.css";
 
 /**
@@ -20,6 +22,7 @@ function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -59,9 +62,12 @@ function Dashboard({ date }) {
       try {
         await clearTableAssignment(target.id, abortController.signal);
         const tableData = await listTables(abortController.signal);
-        const reservationData = await listReservations(date, abortController.signal);
+        const reservationData = await listReservations(
+          date,
+          abortController.signal
+        );
         setReservations(reservationData);
-        setTables(tableData)
+        setTables(tableData);
       } catch (error) {
         setReservationsError(error);
       }
@@ -75,6 +81,18 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   };
 
+  const clickHandler = ({ target }) => {
+    if (target.name === "previous") {
+      history.push(`/dashboard?date=${previous(date)}`);
+    }
+    if (target.name === "today") {
+      history.push(`/dashboard?date=${today()}`);
+    }
+    if (target.name === "next") {
+      history.push(`/dashboard?date=${next(date)}`);
+    }
+  };
+
   return (
     <main>
       <ErrorAlert error={reservationsError} />
@@ -82,6 +100,16 @@ function Dashboard({ date }) {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for date: {date}</h4>
       </div>
+      <button type="button" name="previous" onClick={clickHandler}>
+        Previous
+      </button>
+      <button type="button" name="today" onClick={clickHandler}>
+        Today
+      </button>
+      <button type="button" name="next" onClick={clickHandler}>
+        Next
+      </button>
+      <hr />
       <ListAllReservations reservations={reservations} date={date} />
       <hr />
       <ListAllTables tables={tables} clickHandler={clickHandlerFinishBTN} />
