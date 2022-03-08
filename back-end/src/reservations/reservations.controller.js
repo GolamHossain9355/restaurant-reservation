@@ -191,6 +191,12 @@ module.exports = {
   read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
   update: [
     asyncErrorBoundary(reservationExists),
+    validateFields,
+    statusValidation,
+    asyncErrorBoundary(update),
+  ],
+  updateInStatus: [
+    asyncErrorBoundary(reservationExists),
     statusValidation,
     asyncErrorBoundary(update),
   ],
