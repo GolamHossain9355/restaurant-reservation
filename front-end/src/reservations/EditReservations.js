@@ -43,7 +43,7 @@ export default function EditReservations() {
 
     loadReservation();
     return () => abortController.abort();
-  }, []);
+  }, [reservationId]);
 
   const changeHandler = ({ target }) => {
     let value = target.value;
