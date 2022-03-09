@@ -64,7 +64,7 @@ const requiredFields = [
   "people",
 ];
 
-function createReservationDateWithTime(date, time = "00:00") {
+function createReservationDateWithTime(date, time) {
   return new Date(
     date.slice(0, 4),
     date.slice(5, 7) - 1,
@@ -147,17 +147,16 @@ function validateFields(req, res, next) {
   }
   const dateOrTime =
     reservationDateAndTime.getDay() === present.getDay() ? "time" : "date";
-  if (reservationDateAndTime < present)
+
+  if (reservationDateAndTime < present) {
     multiAlerts.push(
       `The reservation ${dateOrTime} is in the past. Please pick a ${dateOrTime} in the future`
     );
-    console.log("reservation", reservationDateAndTime)
-    console.log("reservation day", reservationDateAndTime.getDay())
-    console.log("present",present)
-    console.log("present day",present.getDay())
+  }
 
-  if (reservationDateAndTime.getDay() === 2)
+  if (reservationDateAndTime.getDay() === 2) {
     multiAlerts.push(`The restaurant is closed on Tuesdays`);
+  }
 
   if (multiAlerts.length > 0) {
     return next({
