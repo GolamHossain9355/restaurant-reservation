@@ -151,6 +151,10 @@ function validateFields(req, res, next) {
     multiAlerts.push(
       `The reservation ${dateOrTime} is in the past. Please pick a ${dateOrTime} in the future`
     );
+    console.log("reservation", reservationDateAndTime)
+    console.log("reservation day", reservationDateAndTime.getDay())
+    console.log("present",present)
+    console.log("present day",present.getDay())
 
   if (reservationDateAndTime.getDay() === 2)
     multiAlerts.push(`The restaurant is closed on Tuesdays`);

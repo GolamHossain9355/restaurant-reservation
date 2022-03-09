@@ -49,9 +49,10 @@ export default function SearchReservation() {
         ></input>
         <button type="submit">Find</button>
       </form>
-      {matchingReservations.length > 0 && matchingReservations[0] !== "no reservation" && (
-        <ListAllReservations reservations={matchingReservations} />
-      )}
+      {matchingReservations.length > 0 &&
+        matchingReservations[0] !== "no reservation" && (
+          <ListAllReservations reservations={matchingReservations} />
+        )}
       {matchingReservations[0] === "no reservation" && (
         <h4>No reservations found</h4>
       )}

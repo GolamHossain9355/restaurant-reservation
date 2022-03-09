@@ -20,7 +20,11 @@ export default function ListAllTables({ tables, clickHandler }) {
                 {table.reservation_id ? (
                   <>
                     Occupied{" "}
-                    <button data-table-id-finish={table.table_id} id={table.table_id} onClick={clickHandler}>
+                    <button
+                      data-table-id-finish={table.table_id}
+                      id={table.table_id}
+                      onClick={clickHandler}
+                    >
                       Finish
                     </button>{" "}
                   </>
