@@ -43,7 +43,6 @@ export default function NewReservations() {
     addReservation();
     return () => abortController.abort();
   };
-  console.log(formData)
 
   const clickHandler = () => history.goBack();
 

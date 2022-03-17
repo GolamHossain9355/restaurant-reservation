@@ -6,6 +6,7 @@ function list(reservation_date) {
       .where({ reservation_date })
       .whereNot({ status: "finished" })
       .whereNot({ status: "canceled"})
+      // .whereNotIn("status", ["finished", "canceled"])
       .orderBy("reservation_time");
   }
 

@@ -44,6 +44,7 @@ export default function SearchReservation() {
           id="mobile_number"
           name="mobile_number"
           placeholder="Enter a customer's phone number"
+          required
           onChange={changeHandler}
           value={mobileNumber}
         ></input>
