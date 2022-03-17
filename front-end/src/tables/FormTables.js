@@ -1,8 +1,8 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-export default function TablesNew({submitHandler, changeHandler, formData}) {
-  const history = useHistory()
+export default function TablesNew({ submitHandler, changeHandler, formData }) {
+  const history = useHistory();
   return (
     <>
       <form onSubmit={submitHandler}>
@@ -29,8 +29,8 @@ export default function TablesNew({submitHandler, changeHandler, formData}) {
           onChange={changeHandler}
           value={formData.capacity}
         />
-        <br/>
-        <br/>
+        <br />
+        <br />
         <button type="submit">Submit</button>
         <button type="button" onClick={() => history.goBack()}>
           Cancel

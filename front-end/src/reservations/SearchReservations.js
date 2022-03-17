@@ -44,14 +44,16 @@ export default function SearchReservation() {
           id="mobile_number"
           name="mobile_number"
           placeholder="Enter a customer's phone number"
+          required
           onChange={changeHandler}
           value={mobileNumber}
         ></input>
         <button type="submit">Find</button>
       </form>
-      {matchingReservations.length > 0 && matchingReservations[0] !== "no reservation" && (
-        <ListAllReservations reservations={matchingReservations} />
-      )}
+      {matchingReservations.length > 0 &&
+        matchingReservations[0] !== "no reservation" && (
+          <ListAllReservations reservations={matchingReservations} />
+        )}
       {matchingReservations[0] === "no reservation" && (
         <h4>No reservations found</h4>
       )}

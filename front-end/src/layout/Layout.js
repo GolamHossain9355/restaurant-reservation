@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Menu from "./Menu";
 import Routes from "./Routes";
 
@@ -12,16 +12,22 @@ import "./Layout.css";
  * @returns {JSX.Element}
  */
 function Layout() {
+  const [hasClicked, setHasClicked] = useState(false);
+
+  const clickHandler = () => {
+    setHasClicked(!hasClicked);
+  };
+
+  const outsideClickHandler = () => {
+    if (hasClicked) {
+      setHasClicked(false);
+    }
+  };
+
   return (
-    <div className="container-fluid">
-      <div className="row h-100">
-        <div className="col-md-2 side-bar">
-          <Menu />
-        </div>
-        <div className="col">
-          <Routes />
-        </div>
-      </div>
+    <div onClick={outsideClickHandler}>
+      <Menu clickHandler={clickHandler} hasClicked={hasClicked} />
+      <Routes />
     </div>
   );
 }

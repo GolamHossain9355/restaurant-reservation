@@ -15,7 +15,7 @@ function ErrorAlert({ error }) {
         <div className="alert alert-danger m-2">
           Errors:
           <ul>
-            {error.message.map(msg => (
+            {error.message.map((msg) => (
               <li>{msg}</li>
             ))}
           </ul>

@@ -22,7 +22,16 @@ function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  const history = useHistory();
+  const history = useHistory({});
+  const defaultTable = {
+    first_name: "",
+    last_name: "",
+    mobile_number: "",
+    reservation_date: "",
+    reservation_time: "",
+    people: "",
+    status: "",
+  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -30,7 +39,12 @@ function Dashboard({ date }) {
     async function loadReservations() {
       try {
         const data = await listReservations(date, abortController.signal);
-        setReservations(data);
+        data.length <= 7
+          ? setReservations([
+              ...data,
+              ...new Array(5 - data.length).fill(defaultTable),
+            ])
+          : setReservations(data);
       } catch (error) {
         setReservationsError(error);
       }
@@ -81,42 +95,63 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   };
 
-  const clickHandler = ({ target }) => {
-    if (target.name === "previous") {
+  const clickHandler = (event) => {
+    if (event.target.name === "previous") {
       history.push(`/dashboard?date=${previous(date)}`);
     }
-    if (target.name === "today") {
+    if (event.target.name === "today") {
       history.push(`/dashboard?date=${today()}`);
     }
-    if (target.name === "next") {
+    if (event.target.name === "next") {
       history.push(`/dashboard?date=${next(date)}`);
     }
   };
+  let buttonClassForToday = "button";
+
+  if (date === today()) buttonClassForToday = "disabled";
 
   return (
     <main>
       <ErrorAlert error={reservationsError} />
-      <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date: {date}</h4>
+      <div className="header">
+        <h1>Dashboard</h1>
+        <h4 className="mb-0">Reservations for {date}</h4>
+        <div className="button-dashboard">
+          <button
+            type="button"
+            className="button"
+            name="previous"
+            onClick={clickHandler}
+          >
+            Previous
+          </button>{" "}
+          <button
+            type="button"
+            className={`${buttonClassForToday}`}
+            name="today"
+            onClick={clickHandler}
+          >
+            Today
+          </button>{" "}
+          <button
+            type="button"
+            className="button"
+            name="next"
+            onClick={clickHandler}
+          >
+            Next
+          </button>
+        </div>
       </div>
-      <button type="button" name="previous" onClick={clickHandler}>
-        Previous
-      </button>
-      <button type="button" name="today" onClick={clickHandler}>
-        Today
-      </button>
-      <button type="button" name="next" onClick={clickHandler}>
-        Next
-      </button>
       <hr />
-      <ListAllReservations
-        reservations={reservations}
-        date={date}
-        setReservations={setReservations}
-      />
-      <hr />
-      <ListAllTables tables={tables} clickHandler={clickHandlerFinishBTN} />
+      <div className="reservationsTables">
+        <ListAllTables tables={tables} clickHandler={clickHandlerFinishBTN} />
+        <ListAllReservations
+          reservations={reservations}
+          date={date}
+          setReservations={setReservations}
+        />
+      </div>
     </main>
   );
 }

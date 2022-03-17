@@ -1,13 +1,492 @@
-.side-bar {
-  background-color: #393a44;
-  min-width: 200px;
+* {
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-table, th, td {
-  border:1px solid black;
+header {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  --box-shadow-color: #45668a;
+
+  margin: 0;
+  padding: 0;
+  background-image: url(../images/shutterstock_2104593521.png);
+  background-repeat: repeat;
+  background-size: 60%;
+}
+
+/* nav bar styling */
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+}
+
+.logo,
+.link,
+.navbar i {
+  color: white;
+}
+
+.link {
+  padding: 0.5rem 1rem;
+  display: block;
+}
+
+.navbar i {
+  padding: 0.15rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  margin: 0.5rem;
+}
+
+.navbar-links {
+  width: 100%;
+  display: none;
+  position: absolute;
+  background-color: #0a0908;
+  top: 3.18rem;
+  padding-bottom: 2.6px;
+}
+
+.navbar-links ul {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-links li {
+  list-style: none;
   text-align: center;
 }
 
-table {
+@keyframes growDown {
+  0% {
+    transform: scaleY(0);
+  }
+  80% {
+    transform: scaleY(1.4);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.navbar-links li:hover {
+  box-shadow: 2.5px 5px 5px;
+  border-radius: 10px;
+  text-shadow: 5px;
+  transition: 0.3s;
+}
+.navbar-links li:active {
+  box-shadow: 0 0.5px 0;
+  transition: 0.1s;
+  transform: translateY(2px);
+}
+
+.link:hover,
+.link:hover > i,
+.logo:hover,
+.logo:hover > i {
+  color: #fff;
+  font-weight: 1000;
+  text-decoration: none;
+}
+
+.toggle-button {
+  position: absolute;
+  cursor: pointer;
+  top: 0.75rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+}
+
+.toggle-button .bar {
+  height: 3px;
   width: 100%;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.animatedNavbar {
+  background-color: black;
+  position: relative;
+  transition: all 0.4s ease-out;
+}
+
+@media (min-width: 650px) {
+  .toggle-button {
+    display: none;
+  }
+
+  .navbar-links,
+  .navbar-links ul {
+    display: flex;
+    position: relative;
+    opacity: 1;
+    top: 0;
+  }
+
+  .animatedNavbar,
+  .navbar {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .navbar-links {
+    width: auto;
+  }
+
+  .navbar {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+@media (min-width: 796px) {
+  .navbar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
+  .link {
+    padding: 1rem;
+  }
+}
+
+/* dashboard header */
+
+.header {
+  --header-color: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+h1 {
+  padding: 1rem;
+  font-size: 70px;
+  color: var(--header-color);
+}
+
+.header h4 {
+  padding-bottom: 1.5rem;
+  color: var(--header-color);
+  font-size: 30px;
+}
+
+/* /dashboard header buttons previous,today,next */
+
+.button-dashboard .button {
+  position: relative;
+  border: none;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 550;
+  background: #5c98d8;
+  border-radius: 15px;
+  box-shadow: 0 5px 0 var(--box-shadow-color);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  margin: 0;
+  outline: 0;
+  padding: 12px 20px;
+  transition: all 0.2s linear;
+}
+
+.button-dashboard .disabled {
+  position: relative;
+  border: none;
+  margin: 0;
+  outline: 0;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 550;
+  background: rgb(92 152 216);
+  box-shadow: 0 2px 0 #45668a;
+  transform: translateY(3px);
+  border-radius: 15px;
+  opacity: 0.5;
+  color: #fff;
+  cursor: default;
+  font: inherit;
+  padding: 12px 20px;
+  transition: all 0.1s linear;
+}
+
+.button-dashboard .button:active {
+  box-shadow: 0 2px 0 var(--box-shadow-color);
+  transform: translateY(4px);
+}
+
+.button-dashboard .button:hover {
+  background: #76afec;
+}
+
+/* /dashboard buttons: seat,edit next */
+
+.table-reservations td .table-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+td .table-buttons > a,
+td .table-buttons > button {
+  position: relative;
+  border: none;
+  text-decoration: none;
+  background: none;
+  border-radius: 10px;
+  color: black;
+  cursor: pointer;
+  font: inherit;
+  margin: 2px 2px;
+  outline: 0;
+  padding: 6px 8px;
+  transition: all 0.2s linear;
+}
+
+.table-reservations td .button-seat {
+  background: #5c98d8;
+  box-shadow: 0 5px 0 var(--box-shadow-color);
+}
+
+.table-reservations td .button-seat:active {
+  box-shadow: 0 2px 0 var(--box-shadow-color);
+  transform: translateY(4px);
+}
+
+.table-reservations td .button-seat:hover {
+  background: #76afec;
+}
+
+.table-reservations td .button-edit {
+  background: #b4605e;
+  box-shadow: 0 5px 0 #794140;
+}
+
+.table-reservations td .button-edit:active {
+  box-shadow: 0 2px 0 #794140;
+  transform: translateY(4px);
+}
+
+.table-reservations td .button-edit:hover {
+  background: #d47a78;
+}
+
+.table-reservations td .button-cancel {
+  background: #8d99ae;
+  box-shadow: 0 5px 0 #595f69;
+}
+
+.table-reservations td .button-cancel:active {
+  box-shadow: 0 2px 0 #595f69;
+  transform: translateY(1.5px);
+}
+
+.table-reservations td .button-cancel:hover {
+  background: #b0bcd1;
+}
+
+
+
+/*  /dashboard reservations table styling */
+
+.outside-table-container {
+  --scrollbar-color: rgb(0, 0, 0);
+
+  display: flex;
+  justify-content: center;
+}
+
+.table-container {
+  position: relative;
+  width: auto;
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 50px;
+  height: 350px;
+  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.table-container:hover {
+  box-shadow: 2px 2px 10px rgb(0 0 0 / 60%);
+  transform: translateY(-3px)
+}
+
+.table-reservations {
+  background: white;
+  width: auto;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.table-reservations td,
+.table-reservations th {
+  height: 62px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 1px solid black;
+  padding: 8px 4px;
+  font-size: 13px;
+  transition: all 0.3s;
+}
+
+.table-reservations thead th {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  background-color: #1c2124;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.table-reservations tr:nth-child(even) {
+  background-color: #fff;
+}
+
+.table-reservations tr:nth-child(odd) {
+  background-color: rgb(201, 191, 191);
+}
+
+.table-reservations tbody tr:hover {
+  cursor: pointer;
+  box-shadow: 2px 2px 10px rgb(0 0 0 / 60%);
+  color: #1c2124;
+  transform: scale(1.03);
+  transition: all 0.3s;
+}
+
+.table-container h4 {
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  top: 40%;
+  color: #1c2124;
+}
+
+
+
+/* /dashboard tables table styling */
+
+.tables-container {
+  position: relative;
+  width: auto;
+  border-radius: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px; 
+  margin-bottom: 50px;
+  height: 216px;
+  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.tables-container:hover {
+  box-shadow: 2px 2px 10px rgb(0 0 0 / 60%);
+  transform: translateY(-4px)
+}
+
+.tables-table td,
+.tables-table th {
+  height: 43px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 1px solid black;
+  padding: 8px 25px;
+  font-size: 13px;
+  transition: all 0.3s;
+}
+
+.tables-table thead th {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  background-color: #1c2124;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.tables-table tr:nth-child(even) {
+  background-color: #fff;
+}
+
+.tables-table tr:nth-child(odd) {
+  background-color: rgb(201, 191, 191);
+}
+
+.tables-table tbody tr:hover {
+  cursor: pointer;
+  box-shadow: 2px 2px 10px rgb(0 0 0 / 60%);
+  color: #1c2124;
+  transform: scale(1.03);
+  transition: all 0.3s;
+}
+
+
+@media (min-width: 650px) {
+  .table-reservations td,
+  .table-reservations th {
+    padding: 20px 10px;
+  }
+
+  .table-reservations {
+    width: 660px;
+  }
+
+  .table-reservations td .table-buttons {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 950px) {
+  .table-reservations td,
+  .table-reservations th {
+    padding: 20px 20px;
+  }
+
+  .table-reservations {
+    width: 915px;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 7px var(--scrollbar-color);
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: inset 0 0 10px var(--scrollbar-color);
 }
