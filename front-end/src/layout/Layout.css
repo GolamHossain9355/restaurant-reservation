@@ -1,3 +1,5 @@
+
+
 * {
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
@@ -13,6 +15,7 @@ header {
 body {
   --box-shadow-color: #45668a;
 
+  width: 100%;
   margin: 0;
   padding: 0;
   background-image: url(../images/shutterstock_2104593521.png);
@@ -307,8 +310,6 @@ td .table-buttons > button {
   background: #b0bcd1;
 }
 
-
-
 /*  /dashboard reservations table styling */
 
 .outside-table-container {
@@ -325,17 +326,13 @@ td .table-buttons > button {
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 50px;
+  box-shadow: 2px 2px 10px rgb(0 0 0 / 60%);
   height: 350px;
   overflow: auto;
   overflow-y: scroll;
   overflow-x: hidden;
   text-align: center;
   transition: all 0.3s;
-}
-
-.table-container:hover {
-  box-shadow: 2px 2px 10px rgb(0 0 0 / 60%);
-  transform: translateY(-3px)
 }
 
 .table-reservations {
@@ -390,8 +387,6 @@ td .table-buttons > button {
   color: #1c2124;
 }
 
-
-
 /* /dashboard tables table styling */
 
 .tables-container {
@@ -400,19 +395,15 @@ td .table-buttons > button {
   border-radius: 10px;
   margin-left: 20px;
   margin-right: 20px;
-  margin-top: 10px; 
+  margin-top: 10px;
   margin-bottom: 50px;
+  box-shadow: 2px 2px 10px rgb(0 0 0 / 60%);
   height: 216px;
   overflow: auto;
   overflow-y: scroll;
   overflow-x: hidden;
   text-align: center;
   transition: all 0.3s;
-}
-
-.tables-container:hover {
-  box-shadow: 2px 2px 10px rgb(0 0 0 / 60%);
-  transform: translateY(-4px)
 }
 
 .tables-table td,
@@ -451,7 +442,6 @@ td .table-buttons > button {
   transform: scale(1.03);
   transition: all 0.3s;
 }
-
 
 @media (min-width: 650px) {
   .table-reservations td,

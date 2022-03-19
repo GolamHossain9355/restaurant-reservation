@@ -67,7 +67,7 @@ function missingFields(requiredFields) {
     const { data } = req.body;
 
     requiredFields.map((field) => {
-      if (!data || !data[field]) {
+      if (!data?.[field]) {
         return next({
           status: 400,
           message: `Required field: ${field} is missing`,

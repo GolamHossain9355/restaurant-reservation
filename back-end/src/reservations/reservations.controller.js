@@ -77,7 +77,7 @@ function createReservationDateWithTime(date, time) {
 function validateFields(req, res, next) {
   const { data = {} } = req.body;
 
-  if (data["status"] && data["status"] !== "booked") {
+  if (data?.["status"] && data["status"] !== "booked") {
     return next({
       status: 400,
       message: `reservation is ${data["status"]}`,
@@ -85,8 +85,7 @@ function validateFields(req, res, next) {
   }
 
   if (
-    data["reservation_date"] &&
-    !data["reservation_date"].match(/\d{4}-\d{2}-\d{2}/g)
+    !data["reservation_date"]?.match(/\d{4}-\d{2}-\d{2}/g)
   ) {
     return next({
       status: 400,
@@ -95,8 +94,7 @@ function validateFields(req, res, next) {
   }
 
   if (
-    data["reservation_time"] &&
-    !data["reservation_time"].match(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
+    !data["reservation_time"]?.match(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
   ) {
     return next({
       status: 400,

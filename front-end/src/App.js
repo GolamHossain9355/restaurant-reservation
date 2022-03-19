@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Layout from "./layout/Layout";
+import 'normalize.css';
 
 /**
  * Defines the root application component.
