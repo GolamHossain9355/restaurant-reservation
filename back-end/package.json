@@ -8,6 +8,10 @@
     "url": "https://github.com/Thinkful-Ed/starter-restaurant-reservation",
     "directory": "/back-end"
   },
+  "engines": {
+    "node": "16.13.0",
+    "npm": "8.1.2"
+  },
   "scripts": {
     "start": "node src/server.js",
     "start:dev": "nodemon --ignore src/db/migrations src/server.js",

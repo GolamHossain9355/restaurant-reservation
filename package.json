@@ -7,6 +7,10 @@
     "type": "git",
     "url": "https://github.com/Thinkful-Ed/starter-restaurant-reservation"
   },
+  "engines": {
+    "node": "16.13.0",
+    "npm": "8.1.2"
+  },
   "scripts": {
     "build": "npm -prefix front-end run build",
     "preinstall": "cd ./back-end && npm install",
