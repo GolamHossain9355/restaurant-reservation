@@ -58,7 +58,6 @@
   "dependencies": {
     "heroku": "^7.3.0",
     "morgan": "^1.10.0",
-    "normalize.css": "^8.0.1",
     "react-motion": "^0.5.2",
     "react-spring": "^9.4.4"
   }
