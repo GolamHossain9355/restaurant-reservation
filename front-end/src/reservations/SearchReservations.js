@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { listReservationsByMobileNumber } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ListAllReservations from "./ListAllReservations";
+import "./SearchReservations.css";
 
 export default function SearchReservation() {
   const [matchingReservations, setMatchingReservations] = useState([]);
@@ -37,25 +38,31 @@ export default function SearchReservation() {
   return (
     <>
       <ErrorAlert error={reservationsError} />
-      <form onSubmit={submitHandler}>
-        <label htmlFor="mobile_number">Search: </label>
-        <input
-          type="text"
-          id="mobile_number"
-          name="mobile_number"
-          placeholder="Enter a customer's phone number"
-          required
-          onChange={changeHandler}
-          value={mobileNumber}
-        ></input>
-        <button type="submit">Find</button>
+      <form onSubmit={submitHandler} className="form">
+        <h1>Search By Phone Number</h1>
+        <div>
+          <label htmlFor="mobile_number"></label>
+          <input
+            type="text"
+            id="mobile_number"
+            name="mobile_number"
+            className="input"
+            placeholder="123-456-7890"
+            required
+            onChange={changeHandler}
+            value={mobileNumber}
+          ></input>
+          <button type="submit">Find</button>
+        </div>
       </form>
       {matchingReservations.length > 0 &&
         matchingReservations[0] !== "no reservation" && (
           <ListAllReservations reservations={matchingReservations} />
         )}
       {matchingReservations[0] === "no reservation" && (
-        <h4>No reservations found</h4>
+        <div className="no-reservation-header">
+          <h2>No reservations found</h2>
+        </div>
       )}
     </>
   );

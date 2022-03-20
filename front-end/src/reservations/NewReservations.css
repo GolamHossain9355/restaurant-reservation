@@ -1,0 +1,78 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.new-reservations-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0px;
+  color: #fff;
+}
+
+.new-reservations-form div input {
+  border: none;
+  appearance: none;
+  border-radius: 8px;
+  width: 250px;
+  padding: 10px;
+  outline: none;
+  margin: 10px 50px;
+}
+
+.new-reservations-form div label {
+  width: 200px;
+  text-align: end;
+  font-size: 25px;
+}
+
+.button-container {
+  margin: 40px;
+}
+
+.button-container button {
+  position: relative;
+  border: none;
+  text-decoration: none;
+  background: none;
+  border-radius: 10px;
+  color: black;
+  cursor: pointer;
+  font: inherit;
+  margin: 0px 4px;
+  outline: 0;
+  padding: 8.5px 8px;
+  transition: all 0.2s linear;
+}
+
+.button-container .submit {
+  background: #5c98d8;
+  box-shadow: 0 5px 0 var(--box-shadow-color);
+}
+
+.button-container .submit:active {
+  box-shadow: 0 2px 0 var(--box-shadow-color);
+  transform: translateY(4px);
+}
+
+.button-container .submit:hover {
+  background: #76afec;
+}
+
+.button-container .cancel {
+  background: #8d99ae;
+  box-shadow: 0 5px 0 #595f69;
+}
+
+.button-container .cancel:active {
+  box-shadow: 0 2px 0 #595f69;
+  transform: translateY(1.5px);
+}
+
+.button-container .cancel:hover {
+  background: #b0bcd1;
+}
