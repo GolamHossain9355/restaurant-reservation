@@ -4,40 +4,32 @@
   box-sizing: border-box;
 }
 
-.tables-form {
+.seating-form {
   width: 100%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 40px 0px;
   color: #fff;
 }
 
-.tables-form div input {
+.seating-form select {
   border: none;
   appearance: none;
   border-radius: 8px;
   width: 250px;
   padding: 10px;
   outline: none;
-  margin: 10px 50px;
+  margin: 10px 30px;
 }
 
-.tables-form div label {
+.seating-form div label {
   width: 200px;
   text-align: end;
   font-size: 25px;
 }
 
-
-/* button styling for new tables page */
-
-.tables-button-container {
-  margin: 40px;
-}
-
-.tables-button-container button {
+.seating-button-container button {
   position: relative;
   border: none;
   text-decoration: none;
@@ -52,30 +44,30 @@
   transition: all 0.2s linear;
 }
 
-.tables-button-container .submit {
+.seating-button-container .submit {
   background: #5c98d8;
   box-shadow: 0 5px 0 var(--box-shadow-color);
 }
 
-.tables-button-container .submit:active {
+.seating-button-container .submit:active {
   box-shadow: 0 2px 0 var(--box-shadow-color);
   transform: translateY(4px);
 }
 
-.tables-button-container .submit:hover {
+.seating-button-container .submit:hover {
   background: #76afec;
 }
 
-.tables-button-container .cancel {
+.seating-button-container .cancel {
   background: #8d99ae;
   box-shadow: 0 5px 0 #595f69;
 }
 
-.tables-button-container .cancel:active {
+.seating-button-container .cancel:active {
   box-shadow: 0 2px 0 #595f69;
   transform: translateY(1.5px);
 }
 
-.tables-button-container .cancel:hover {
+.seating-button-container .cancel:hover {
   background: #b0bcd1;
 }

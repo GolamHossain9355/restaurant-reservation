@@ -3,6 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 import ListAllTables from "../tables/ListAllTables";
 import { listTables, assignTable } from "../utils/api";
+import "./SeatingReservations.css";
 
 export default function SeatingReservation() {
   const [tables, setTables] = useState([]);
@@ -59,19 +60,21 @@ export default function SeatingReservation() {
   return (
     <>
       <ErrorAlert error={reservationError} />
-      <form onSubmit={submitHandler}>
-        <label htmlFor="table_id">Choose a table:</label>
-        <select name="table_id" id="table_id" onChange={changeHandler}>
-          {tables.map((table) => (
-            <option value={table.table_id} key={table.table_id}>
-              {table.table_name} - {table.capacity}
-            </option>
-          ))}
-        </select>
-        <button type="submit">Submit</button>
-        <button type="button" onClick={() => history.goBack()}>
-          Cancel
-        </button>
+      <form onSubmit={submitHandler} className="seating-form">
+          <label htmlFor="table_id">Choose a table:</label>
+          <select name="table_id" id="table_id" onChange={changeHandler}>
+            {tables.map((table) => (
+              <option value={table.table_id} key={table.table_id}>
+                {table.table_name} - {table.capacity}
+              </option>
+            ))}
+          </select>
+        <div className="seating-button-container">
+          <button type="submit" className="submit">Submit</button>
+          <button type="button" className="cancel" onClick={() => history.goBack()}>
+            Cancel
+          </button>
+        </div>
       </form>
       <ListAllTables tables={tables} />
     </>
