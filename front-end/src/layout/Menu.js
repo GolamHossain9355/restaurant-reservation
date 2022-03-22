@@ -46,7 +46,7 @@ function Menu({ hasClicked, clickHandler }) {
             }}
           >
             <nav className="navbar">
-              <a className="toggle-button" href="#" onClick={clickHandler}>
+              <a className="toggle-button" href="#hello.com" onClick={clickHandler}>
                 <span className="bar"></span>
                 <span className="bar"></span>
                 <span className="bar"></span>

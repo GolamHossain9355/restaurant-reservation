@@ -23,23 +23,23 @@ function Dashboard({ date }) {
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const history = useHistory({});
-  const defaultTable = {
-    first_name: "",
-    last_name: "",
-    mobile_number: "",
-    reservation_date: "",
-    reservation_time: "",
-    people: "",
-    status: "",
-  };
 
   useEffect(() => {
+    const defaultTable = {
+      first_name: "",
+      last_name: "",
+      mobile_number: "",
+      reservation_date: "",
+      reservation_time: "",
+      people: "",
+      status: "",
+    };
     const abortController = new AbortController();
     setReservationsError(null);
     async function loadReservations() {
       try {
         const data = await listReservations(date, abortController.signal);
-        data.length <= 7
+        data.length <= 5
           ? setReservations([
               ...data,
               ...new Array(5 - data.length).fill(defaultTable),
@@ -71,6 +71,15 @@ function Dashboard({ date }) {
   const clickHandlerFinishBTN = ({ target }) => {
     const abortController = new AbortController();
     setReservationsError(null);
+    const defaultTable = {
+      first_name: "",
+      last_name: "",
+      mobile_number: "",
+      reservation_date: "",
+      reservation_time: "",
+      people: "",
+      status: "",
+    };
 
     async function clearAssignment() {
       try {
@@ -80,7 +89,12 @@ function Dashboard({ date }) {
           date,
           abortController.signal
         );
-        setReservations(reservationData);
+        reservationData.length <= 5
+          ? setReservations([
+              ...reservationData,
+              ...new Array(5 - reservationData.length).fill(defaultTable),
+            ])
+          : setReservations(reservationData);
         setTables(tableData);
       } catch (error) {
         setReservationsError(error);
@@ -91,7 +105,9 @@ function Dashboard({ date }) {
       "Is this table ready to seat new guests? \n\n This cannot be undone."
     );
 
-    if (confirm) clearAssignment();
+    if (confirm) {
+      clearAssignment();
+    }
     return () => abortController.abort();
   };
 
