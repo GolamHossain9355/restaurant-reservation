@@ -18,15 +18,15 @@ The development process included the use of the following tools and practices:
 This application allows a user to create, edit, and cancel a reservation. Create a table, seat a reservation to a table, and finish a table. As well as search for reservations by phone number.
 
 ### The Dashboard
-![dashboard](src/images/dashboard.png)
+![dashboard](front-end/src/images/dashboard.png)
 ### Create new Reservation
-![create-a-reservation](src/images/create-new-reservation.png)
+![create-a-reservation](front-end/src/images/create-new-reservation.png)
 ### Create new Table
-![create-a-table](src/images/create-new-table.png)
+![create-a-table](front-end/src/images/create-new-table.png)
 ### Search for Reservation
-![search-for-reservation](src/images/search-reservations-by-mobile-number.png)
+![search-for-reservation](front-end/src/images/search-reservations-by-mobile-number.png)
 ### Seat a Reservation
-![seat-a-reservation](src/images/seating-reservations.png)
+![seat-a-reservation](front-end/src/images/seating-reservations.png)
 
 
 ## Technologies and Tools
