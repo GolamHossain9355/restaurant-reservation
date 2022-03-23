@@ -20,9 +20,9 @@ This application allows a user to create, edit, and cancel a reservation. Create
 ### The Dashboard
 ![dashboard](front-end/src/images/dashboard.png)
 ### Create new Reservation
-![create-a-reservation](front-end/src/images/create-new-reservation.png)
+![create-new-reservation](front-end/src/images/create-new-reservation.png)
 ### Create new Table
-![create-a-table](front-end/src/images/create-new-table.png)
+![create-new-table](front-end/src/images/create-new-table.png)
 ### Search for Reservation
 ![search-for-reservation](front-end/src/images/search-reservations-by-mobile-number.png)
 ### Seat a Reservation
