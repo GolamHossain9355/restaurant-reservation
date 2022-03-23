@@ -47,8 +47,8 @@ export default function ListAllReservations({
               </tr>
             </thead>
             <tbody>
-              {reservations.map((reservation, index) => (
-                <tr key={index}>
+              {reservations.map((reservation) => (
+                <tr key={reservation.reservation_id}>
                   <td>{reservation.first_name}</td>
                   <td>{reservation.last_name}</td>
                   <td>{reservation.mobile_number}</td>
