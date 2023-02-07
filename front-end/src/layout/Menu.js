@@ -1,5 +1,5 @@
 import React from "react";
-import { Motion, spring } from "react-motion";
+// import { Motion, spring } from "react-motion";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "./useMediaQuery";
 import "./Layout.css";
@@ -23,7 +23,7 @@ function Menu({ hasClicked, clickHandler }) {
 
   return (
     <>
-      <Motion
+      {/* <Motion
         defaultStyle={{
           x: -700,
           opacity: 0,
@@ -91,7 +91,7 @@ function Menu({ hasClicked, clickHandler }) {
             </nav>
           </div>
         )}
-      </Motion>
+      </Motion> */}
     </>
   );
 }
